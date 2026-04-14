@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Delicia Chef</string>
+
+    <string name="common_welcome">¡Bienvenido!</string>
+    <string name="common_back">Volver</string>
+    <string name="common_label_name">Nombre:</string>
+    <string name="common_label_email">Correo:</string>
+    <string name="common_label_password">Contraseña:</string>
+    <string name="common_label_phone">Teléfono:</string>
+    <string name="common_label_username">Nombre de usuario:</string>
+    <string name="common_label_birthdate">Fecha de nacimiento:</string>
+    <string name="common_btn_save">Registrarse</string>
+
+    <string name="login_desc">Inicia sesión para continuar</string>
+    <string name="login_btn_enter">Ingresar</string>
+    <string name="login_forgot_password">Restablecer contraseña</string>
+    <string name="login_register">Registrarse</string>
+
+    <string name="register_desc">Regístrate para continuar</string>
+    <string name="register_btn_next">Continuar</string>
+
+    <string name="info_title">Cuéntanos de ti</string>
+    <string name="info_btn_finish">Finalizar registro</string>
 </resources>
