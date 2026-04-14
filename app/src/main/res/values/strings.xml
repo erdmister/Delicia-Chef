@@ -21,4 +21,8 @@
 
     <string name="info_title">Cuéntanos de ti</string>
     <string name="info_btn_finish">Finalizar registro</string>
+
+    <!-- Registro -->
+    <string name="register_btn_action">Registrar</string>
+
 </resources>
