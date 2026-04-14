@@ -2,11 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background_color">#FFFFFF</color>
+    <color name="header_login">#E67E22</color>
 
-    <color name="primary_color">#FF5722</color> <color name="primary_dark">#E64A19</color>
-    <color name="accent_color">#FFC107</color> <color name="input_label_color">#555555</color> <color name="background_color">#F5F5F5</color>
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
+    <color name="color_accent">#F1C40F</color>
 
-    <color name="header_login">#5EC6F3</color>
+    <color name="text_primary">#2C3E50</color>
+    <color name="text_secondary">#7F8C8D</color>
 </resources>
