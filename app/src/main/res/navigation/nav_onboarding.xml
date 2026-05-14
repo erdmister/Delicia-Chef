@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_onboarding"
+    app:startDestination="@id/loginFragment">
+
+    <!-- 1. PANTALLA DE LOGIN -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.deliciachef.ui.feature.onboarding.login.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+
+        <!-- Pasar al menu principal despues del login -->
+        <action
+            android:id="@+id/action_loginFragment_to_homeContainerFragment"
+            app:destination="@id/homeContainerFragment"
+            app:popUpTo="@id/nav_onboarding"
+            app:popUpToInclusive="true" />
+
+        <!-- Ir al Registro -->
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <!-- Ir a Recuperar Contraseña -->
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <!-- 2. PANTALLA DE REGISTRO (Corregido el package a .register) -->
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.deliciachef.ui.feature.onboarding.register.RegisterFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_register">
+
+        <!-- Continuar a Info Personal -->
+        <action
+            android:id="@+id/action_registerFragment_to_personalInfoFragment"
+            app:destination="@id/personalInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <!-- 3. PANTALLA DE RECUPERAR CONTRASEÑA -->
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.deliciachef.ui.feature.onboarding.recovery.ForgotPasswordFragment"
+        android:label="Recuperar"
+        tools:layout="@layout/fragment_forgot_password" />
+
+    <!-- 4. PANTALLA DE INFO PERSONAL (Corregido el package a .register) -->
+    <fragment
+        android:id="@+id/personalInfoFragment"
+        android:name="com.deliciachef.ui.feature.onboarding.register.PersonalInfoFragment"
+        android:label="Info Personal"
+        tools:layout="@layout/fragment_personal_info" />
+
+    <!-- Pasar al menu principal despues del login -->
+    <fragment
+        android:id="@+id/homeContainerFragment"
+        android:name="com.deliciachef.ui.feature.home.HomeContainerFragment"
+        tools:layout="@layout/fragment_home_container" />
+</navigation>

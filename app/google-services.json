@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "911202699913",
+    "project_id": "deliciacheft",
+    "storage_bucket": "deliciacheft.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911202699913:android:7c4feeece1e7d162271458",
+        "android_client_info": {
+          "package_name": "com.deliciachef"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe7qysIbrbqp9Bb8H125W0wc2ZoucbmPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
