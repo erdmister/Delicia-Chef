@@ -19,7 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val properties = Properties()   // ← sin java.util.
+        val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
         val apiKey = properties.getProperty("RECIPE_API_KEY") ?: "\"\""
         buildConfigField("String", "RECIPE_API_KEY", apiKey)
@@ -60,7 +60,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    // Firebase (Usando BOM)
+    // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     // implementation(libs.firebase.firestore)

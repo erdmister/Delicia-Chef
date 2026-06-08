@@ -22,12 +22,12 @@ interface RecipeApiService {
     @GET("recipes/{id}")
     suspend fun getRecipeById(
         @Path("id") id: Int,
-        @Query("lang") lang: String = "es"
+        @Query("lang") lang: String = "en"
     ): RecipeDetailResponse
 
     @GET("recipes/random")
     suspend fun getRandomRecipe(
-        @Query("lang") lang: String = "es",
+        @Query("lang") lang: String = "en",
         @Query("cuisine") cuisine: String? = null
     ): RecipeDetailResponse
 }

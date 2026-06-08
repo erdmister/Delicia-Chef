@@ -69,7 +69,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
                     binding.btnLogin.isEnabled = !state.isLoading
 
-                    // Manejar éxito (Navegar al flujo principal)
+                    // Manejar exito (Navegar al flujo principal)
                     if (state.isSuccess) {
                         Toast.makeText(requireContext(), "¡Bienvenido!", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_loginFragment_to_homeContainerFragment)
@@ -78,7 +78,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     // Manejar errores
                     state.errorMessage?.let { error ->
                         Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-                        viewModel.clearError() // Limpiar error para que no se muestre de nuevo al girar pantalla
+                        viewModel.clearError()
                     }
                 }
             }
@@ -87,6 +87,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Evitar memory leaks
+        _binding = null
     }
 }

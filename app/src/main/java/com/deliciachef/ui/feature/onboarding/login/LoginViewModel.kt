@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// ¡Ahora inyectamos el repositorio en el constructor!
 class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -28,7 +27,6 @@ class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
         _state.update { it.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch {
-            // Llamamos a nuestro repositorio limpio
             when (val result = repository.login(email, pass)) {
                 is Resource.Success -> {
                     _state.update { it.copy(isLoading = false, isSuccess = true) }
@@ -37,7 +35,7 @@ class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
                     _state.update { it.copy(isLoading = false, errorMessage = result.message) }
                 }
                 is Resource.Loading -> {
-                    // Opcional, ya lo manejamos arriba
+
                 }
             }
         }
