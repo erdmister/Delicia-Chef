@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,6 +18,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties()   // ← sin java.util.
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        val apiKey = properties.getProperty("RECIPE_API_KEY") ?: "\"\""
+        buildConfigField("String", "RECIPE_API_KEY", apiKey)
     }
 
     buildTypes {
@@ -36,6 +43,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -55,8 +63,18 @@ dependencies {
     // Firebase (Usando BOM)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-    // implementation(libs.firebase.firestore) // Listo para cuando lo necesites
+    // implementation(libs.firebase.firestore)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
+    // Network (Retrofit & OkHttp)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging)
+
+    // Lifecycle & Coroutines
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Testing
     testImplementation(libs.junit)

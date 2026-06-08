@@ -11,7 +11,6 @@ import com.deliciachef.ui.feature.onboarding.register.RegisterViewModel
 @Suppress("UNCHECKED_CAST")
 class AuthViewModelFactory : ViewModelProvider.Factory {
 
-    // Instanciamos el repositorio una sola vez
     private val authRepository: AuthRepository = AuthRepositoryImpl()
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
