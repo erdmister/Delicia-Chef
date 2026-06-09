@@ -7,17 +7,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deliciachef.databinding.ItemRecipeBinding
 import com.deliciachef.domain.model.Recipe
+import com.bumptech.glide.Glide
 
 class RecipeAdapter(
-    private val onRecipeClick: (Recipe) -> Unit
-) : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(RecipeDiffCallback()) {
+    private val onClick: (Recipe) -> Unit // AQUÍ DECLARAMOS EL ONCLICK CORRECTAMENTE
+) : ListAdapter<Recipe, RecipeAdapter.RecipeViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        val binding = ItemRecipeBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemRecipeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RecipeViewHolder(binding)
     }
 
@@ -25,31 +22,37 @@ class RecipeAdapter(
         holder.bind(getItem(position))
     }
 
-    inner class RecipeViewHolder(private val binding: ItemRecipeBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class RecipeViewHolder(private val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Recipe) {
+            // 1. Llenamos los textos de la tarjeta
+            binding.tvRecipeTitle.text = item.name
+            binding.tvRecipeCuisine.text = "👥 ${item.servings} porciones"
 
-        fun bind(recipe: Recipe) {
-            binding.tvRecipeTitle.text = recipe.name
+            val totalTime = item.prepTime + item.cookTime
+            binding.tvRecipeTime.text = "⏱ $totalTime min"
 
-            binding.tvRecipeCuisine.text = recipe.cuisine.replaceFirstChar { it.uppercase() }
-            binding.tvRecipeDifficulty.text = recipe.difficulty.replaceFirstChar { it.uppercase() }
+            // Ocultamos la etiqueta de "Guardada" o le damos un uso (opcional)
+            binding.tvRecipeDifficulty.text = "⭐ ${item.difficulty}"
 
-            val totalTime = recipe.prepTime + recipe.cookTime
-            binding.tvRecipeTime.text = "$totalTime min"
+            // 2. 🔥 TRUCO MAGISTRAL: Cargamos la imagen dinámica atada al ID de la receta 🔥
+            val mockImageUrl = "https://loremflickr.com/600/400/food,meal?lock=${item.id}"
 
+            Glide.with(binding.root.context)
+                .load(mockImageUrl)
+                .placeholder(android.R.drawable.ic_menu_report_image) // Imagen de espera
+                .error(android.R.drawable.ic_menu_gallery) // Por si falla el internet
+                .centerCrop()
+                .into(binding.ivRecipeImage)
+
+            // 3. Activamos el clic en toda la tarjeta para ir a los detalles
             binding.root.setOnClickListener {
-                onRecipeClick(recipe)
+                onClick(item)
             }
         }
     }
 
-    class RecipeDiffCallback : DiffUtil.ItemCallback<Recipe>() {
-        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-            return oldItem == newItem
-        }
+    class DiffCallback : DiffUtil.ItemCallback<Recipe>() {
+        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe) = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe) = oldItem == newItem
     }
 }

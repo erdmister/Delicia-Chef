@@ -37,7 +37,7 @@ class RecipeDetailFragment : Fragment() {
             FirebaseFirestore.getInstance()
         )
         val saveUseCase = SaveRecipeUseCase(savedRepo)
-        val deleteUseCase = DeleteSavedRecipeUseCase(savedRepo)
+        val deleteUseCase = DeleteSavedRecipeUseCase(savedRepo) // CORREGIDO: Eliminado el "Recipe" extra
         val checkSavedUseCase = CheckIfRecipeSavedUseCase(savedRepo)
 
         RecipeDetailViewModelFactory(getByIdUseCase, saveUseCase, deleteUseCase, checkSavedUseCase)
@@ -71,6 +71,10 @@ class RecipeDetailFragment : Fragment() {
         binding.fabSave.setOnClickListener {
             viewModel.toggleSaveRecipe()
         }
+
+        binding.fabCalendar.setOnClickListener {
+            showDaySelectionDialog()
+        }
     }
 
     private fun setupToolbar() {
@@ -81,7 +85,7 @@ class RecipeDetailFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-                // datos de la receta
+                // Hilo 1: Escucha el estado de la receta (carga/éxito/error)
                 launch {
                     viewModel.uiState.collect { state ->
                         when (state) {
@@ -104,27 +108,41 @@ class RecipeDetailFragment : Fragment() {
                     }
                 }
 
+                // Hilo 2: Escucha de forma directa y reactiva el estado de la estrella
                 launch {
                     viewModel.isSaved.collect { isSaved ->
-                        if (isSaved) {
-                            binding.fabSave.setImageResource(android.R.drawable.btn_star_big_on)
-                            binding.fabSave.imageTintList = android.content.res.ColorStateList.valueOf(
-                                android.graphics.Color.parseColor("#FFD700")
-                            )
+                        // Asignamos el icono dependiendo del estado
+                        val iconRes = if (isSaved) {
+                            R.drawable.ic_heart_filled
                         } else {
-                            binding.fabSave.setImageResource(android.R.drawable.btn_star_big_off)
-                            binding.fabSave.imageTintList = android.content.res.ColorStateList.valueOf(
-                                android.graphics.Color.parseColor("#808080")
-                            )
+                            R.drawable.ic_heart_outline
                         }
+
+                        // Asignamos el color: Rojo si está guardado, Gris si no lo está
+                        val iconColor = if (isSaved) "#E53935" else "#9E9E9E"
+
+                        binding.fabSave.setImageResource(iconRes)
+                        binding.fabSave.imageTintList = android.content.res.ColorStateList.valueOf(
+                            android.graphics.Color.parseColor(iconColor)
+                        )
                     }
                 }
             }
         }
     }
+
     private fun bindRecipeToUi(recipe: Recipe) {
         binding.tvDetailTitle.text = recipe.name
         binding.tvDetailDescription.text = recipe.description.ifEmpty { "Sin descripción disponible." }
+
+        // 🔥 TRUCO MAGISTRAL PARA LAS IMÁGENES 🔥
+        // Genera una foto de comida de alta calidad anclada al ID de tu receta
+        val mockImageUrl = "https://loremflickr.com/800/600/food,meal?lock=${recipe.id}"
+
+        com.bumptech.glide.Glide.with(this)
+            .load(mockImageUrl)
+            .placeholder(android.R.drawable.ic_menu_report_image) // Mientras carga de internet
+            .into(binding.ivDetailImage)
 
         val totalTime = recipe.prepTime + recipe.cookTime
         binding.tvDetailTime.text = "⏱ $totalTime min"
@@ -142,8 +160,42 @@ class RecipeDetailFragment : Fragment() {
         }.joinToString(separator = "\n\n")
         binding.tvDetailInstructions.text = instructionsText.ifEmpty { "Instrucciones no detalladas." }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showDaySelectionDialog() {
+        val days = arrayOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo")
+
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("¿Qué día quieres agendar esta receta?")
+            .setItems(days) { _, which ->
+                val daySelected = days[which]
+
+                val state = viewModel.uiState.value
+                if (state is RecipeDetailUiState.Success) {
+                    val recipe = state.recipe
+
+                    lifecycleScope.launch {
+                        val repo = com.deliciachef.data.repository.PlannedRecipeRepositoryImpl(
+                            com.google.firebase.auth.FirebaseAuth.getInstance(),
+                            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                        )
+                        repo.savePlannedRecipe(
+                            com.deliciachef.data.remote.firebase.PlannedRecipeDto(
+                                id = recipe.id,
+                                name = recipe.name,
+                                cuisine = recipe.cuisine,
+                                dayOfWeek = daySelected,
+                                totalTime = recipe.prepTime + recipe.cookTime
+                            )
+                        )
+                        Toast.makeText(requireContext(), "Agendada para el $daySelected", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .show()
     }
 }

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="chef_green">#2E7D32</color>
+    <color name="chef_green_light">#E8F5E9</color>
+    <color name="chef_accent_yellow">#FFB300</color>
+
+    <color name="text_main">#1A1A1A</color>
+    <color name="text_secondary">#757575</color>
+    <color name="background_light">#F5F5F5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray_divider">#E0E0E0</color>
     <color name="background_color">#FFFFFF</color>
     <color name="header_login">#E67E22</color>
 
     <color name="color_accent">#F1C40F</color>
 
     <color name="text_primary">#2C3E50</color>
-    <color name="text_secondary">#7F8C8D</color>
 
     <color name="primary_dark">#3700B3</color>
     <color name="primary_color">#6200EE</color>

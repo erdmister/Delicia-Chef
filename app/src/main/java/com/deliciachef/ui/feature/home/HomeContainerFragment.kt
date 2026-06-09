@@ -25,12 +25,33 @@ class HomeContainerFragment : Fragment(R.layout.fragment_home_container) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Buscamos el controlador de navegación anidado (el hijo de este fragmento)
         val navHostFragment = childFragmentManager.findFragmentById(R.id.nav_host_fragment_home) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Magia automática: Conecta los clics del menú inferior con las pantallas del nav_home.xml
         binding.bottomNavigation.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val menu = binding.bottomNavigation.menu
+
+            for (i in 0 until menu.size()) {
+                menu.getItem(i).isCheckable = true
+            }
+
+            when (destination.id) {
+                R.id.searchFragment -> menu.findItem(R.id.searchFragment)?.isChecked = true
+                R.id.savedFragment -> menu.findItem(R.id.savedFragment)?.isChecked = true
+                R.id.calendarFragment -> menu.findItem(R.id.calendarFragment)?.isChecked = true
+                R.id.profileFragment -> menu.findItem(R.id.profileFragment)?.isChecked = true
+                else -> {
+                    for (i in 0 until menu.size()) {
+                        val item = menu.getItem(i)
+                        if (!item.isChecked) {
+                            item.isCheckable = false
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

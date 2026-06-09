@@ -16,7 +16,6 @@ class SavedRecipeRepositoryImpl(
     private val firestore: FirebaseFirestore
 ) : SavedRecipeRepository {
 
-    // Obtenemos el ID del usuario actualmente logueado
     private val userId: String?
         get() = auth.currentUser?.uid
 
@@ -32,7 +31,6 @@ class SavedRecipeRepositoryImpl(
             return@callbackFlow
         }
 
-        // Acrualizacion en tiempo real de las recetas guardadas
         val subscription = collection.orderBy("savedAt", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
@@ -68,6 +66,21 @@ class SavedRecipeRepositoryImpl(
             Resource.Success(Unit)
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Error al eliminar la receta")
+        }
+    }
+
+    suspend fun deleteSavedRecipe(recipeId: Int): com.deliciachef.core.common.Resource<Unit> {
+        return try {
+            val userId = auth.currentUser?.uid ?: return com.deliciachef.core.common.Resource.Error("Usuario no autenticado")
+            firestore.collection("users")
+                .document(userId)
+                .collection("saved_recipes")
+                .document(recipeId.toString())
+                .delete()
+                .await()
+            com.deliciachef.core.common.Resource.Success(Unit)
+        } catch (e: Exception) {
+            com.deliciachef.core.common.Resource.Error(e.localizedMessage ?: "Error al eliminar")
         }
     }
 

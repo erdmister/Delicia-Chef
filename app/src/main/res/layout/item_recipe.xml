@@ -1,72 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/apk/res-tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="12dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/white"
     app:strokeWidth="0dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tv_recipe_title"
-            android:layout_width="0dp"
+            android:id="@+id/tvRecipeTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Avocado and Shrimp Tacos"
+            android:textColor="@color/text_main"
             android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Spaghetti Carbonara" />
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_recipe_cuisine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_recipe_title"
-            tools:text="Italian" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginTop="12dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/ivRecipeImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_report_image" />
+        </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_details_row"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_recipe_cuisine">
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_recipe_difficulty"
+                android:id="@+id/tvRecipeTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#E0E0E0"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:textSize="12sp"
-                tools:text="Easy" />
+                android:text="⏱ 35 min"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:layout_marginEnd="16dp"/>
 
             <TextView
-                android:id="@+id/tv_recipe_time"
+                android:id="@+id/tvRecipeCuisine"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="👥 4 porciones"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvRecipeDifficulty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:background="#E0E0E0"
-                android:paddingHorizontal="8dp"
+                android:background="@color/chef_green_light"
+                android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
+                android:text="Guardada"
+                android:textColor="@color/chef_green"
                 android:textSize="12sp"
-                tools:text="30 min" />
+                android:textStyle="bold" />
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

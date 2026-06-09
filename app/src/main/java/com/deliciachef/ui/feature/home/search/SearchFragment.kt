@@ -53,7 +53,7 @@ class SearchFragment : Fragment() {
 
     private fun setupRecyclerView() {
         recipeAdapter = RecipeAdapter { recipe ->
-            // creamos el paqeute de la receta usando un id
+            // creamos el paquete de la receta usando un id
             val bundle = Bundle().apply {
                 putInt("recipeId", recipe.id)
             }
@@ -63,6 +63,9 @@ class SearchFragment : Fragment() {
                 bundle
             )
         }
+
+        // 🔥 LA SOLUCIÓN A PRUEBA DE BALAS PARA EL BUSCADOR 🔥
+        binding.rvRecipes.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
         binding.rvRecipes.adapter = recipeAdapter
     }
 
@@ -72,30 +75,25 @@ class SearchFragment : Fragment() {
 
                 viewModel.uiState.collect { state ->
                     when (state) {
-                        is SearchUiState.Initial -> {
-
-                        }
                         is SearchUiState.Loading -> {
-                            // Mostramos la bolita de carga y ocultamos lo demas
                             binding.progressBar.visibility = View.VISIBLE
-                            binding.rvRecipes.visibility = View.GONE
                             binding.tvErrorMessage.visibility = View.GONE
                         }
                         is SearchUiState.Success -> {
-                            // Ocultamos carga, mostramos lista y le pasamos las recetas al adaptador
                             binding.progressBar.visibility = View.GONE
                             binding.tvErrorMessage.visibility = View.GONE
-                            binding.rvRecipes.visibility = View.VISIBLE
-
+                            // CORREGIDO: Cambiado searchAdapter por recipeAdapter
                             recipeAdapter.submitList(state.recipes)
                         }
                         is SearchUiState.Error -> {
-                            // Mostramos el error en pantalla
                             binding.progressBar.visibility = View.GONE
-                            binding.rvRecipes.visibility = View.GONE
                             binding.tvErrorMessage.visibility = View.VISIBLE
-
                             binding.tvErrorMessage.text = state.message
+                        }
+                        else -> {
+                            // Maneja el estado 'Initial' o cualquier otro estado por defecto
+                            binding.progressBar.visibility = View.GONE
+                            binding.tvErrorMessage.visibility = View.GONE
                         }
                     }
                 }
